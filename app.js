@@ -1,5 +1,7 @@
 const express = require("express");
 const timelineRoutes = require("./routes/routes");
+require("dotenv").config();
+const { connectToDatabase } = require("./connect");
 const app = express();
 const PORT = process.env.PORT;
 
@@ -10,12 +12,11 @@ app.use(express.json());
 app.use("/api", timelineRoutes);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal Server Error" });
-});
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  await connectToDatabase();
+  console.log(
+    `Database connected ${process.env.MONGO_URL}\nServer is running on Port:${PORT}`
+  );
 });

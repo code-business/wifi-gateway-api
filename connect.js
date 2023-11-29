@@ -7,7 +7,6 @@ async function connectToDatabase() {
   const uri = process.env.MONGO_URL;
   try {
     if (cachedDb == null) {
-      console.log("uri", uri);
       const client = new MongoClient(uri, {
         connectTimeoutMS: 60000,
         serverSelectionTimeoutMS: 5000,
