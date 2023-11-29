@@ -3,10 +3,13 @@ const timelineRoutes = require("./routes/routes");
 require("dotenv").config();
 const { connectToDatabase } = require("./connect");
 const app = express();
+const cors = require("cors");
 const PORT = process.env.PORT;
 
 // Middleware
 app.use(express.json());
+
+app.use(cors());
 
 // Routes
 app.use("/api", timelineRoutes);
