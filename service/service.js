@@ -7,11 +7,13 @@ const fetchTimeline = async (deviceId, date) => {
     const timestampDate = new Date(date);
     const startOfDay = new Date(timestampDate.setUTCHours(0, 0, 0, 0));
     const endOfDay = new Date(timestampDate.setUTCHours(23, 59, 59, 999));
-    const cursor = await db.collection("timeline").find({
-      deviceId: deviceId,
-      timestamp: { $gte: startOfDay.getTime(), $lte: endOfDay.getTime() },
-    });
-    // .limit(20);
+    const cursor = await db
+      .collection("timeline")
+      .find({
+        deviceId: deviceId,
+        timestamp: { $gte: startOfDay.getTime(), $lte: endOfDay.getTime() },
+      })
+      .limit(20);
     const data = await cursor.toArray();
     return data;
   } catch (error) {
