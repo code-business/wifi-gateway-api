@@ -12,9 +12,26 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use("/api", timelineRoutes);
+app.use("/api", authenticateToken, timelineRoutes);
 
 // Error handling middleware
+function authenticateToken(req, res, next) {
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+
+    req.user = user;
+    next();
+  });
+}
 
 // Start the server
 app.listen(PORT, async () => {

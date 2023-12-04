@@ -45,9 +45,21 @@ const searchDevice = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { username, password } = req.body;
+  // Validate credentials (you should have your own logic here)
+  if (username === "user" && password === "password") {
+    const token = jwt.sign({ username }, secretKey, { expiresIn: "1h" });
+    res.json({ token });
+  } else {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
+};
+
 module.exports = {
   getTimeline,
   testApi,
   getAllDevices,
   searchDevice,
+  login,
 };

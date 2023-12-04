@@ -1,4 +1,3 @@
-const { query } = require("express");
 const { connectToDatabase } = require("../connect");
 
 const fetchTimeline = async (deviceId, date) => {
@@ -25,7 +24,11 @@ const fetchTimeline = async (deviceId, date) => {
 const fetchDevices = async () => {
   try {
     const db = await connectToDatabase();
-    const cursor = await db.collection("devices").find().limit(20);
+    const cursor = await db
+      .collection("devices")
+      .find()
+      .sort({ timestamp: -1 })
+      .limit(20);
     const data = cursor.toArray();
     return data;
   } catch (error) {
